@@ -18,6 +18,17 @@ import {
 
 describe('Spotify Wrapper', () => {
 
+  let fetchedStub;
+  let promise;
+
+  beforeEach(() => {
+    fetchedStub = sinon.stub(global, 'fetch')
+    promise = fetchedStub.returnsPromise()
+  })
+
+  afterEach(() => fetchedStub.restore())
+
+
   describe('smoke tests', () => {
 
     it('should exists the search method', () => {
@@ -43,15 +54,8 @@ describe('Spotify Wrapper', () => {
   })
 
   describe('Generic Search', () => {
-    let fetchedStub;
-    let promise;
 
-    beforeEach(() => {
-      fetchedStub = sinon.stub(global, 'fetch')
-      promise = fetchedStub.returnsPromise()
-    })
 
-    afterEach(() => fetchedStub.restore())
 
     it('should call fetch function', () => {
 
@@ -87,6 +91,90 @@ describe('Spotify Wrapper', () => {
       const artists = search('Incubus', 'artist')
 
       expect(artists.resolveValue).to.be.eql({ body: 'json' })
+    })
+
+  })
+
+  describe('searchArtists', () => {
+
+    it('should call fetch function', () => {
+
+      const artists = searchArtists('Incubus')
+      expect(fetchedStub).to.have.been.calledOnce
+
+    })
+
+    it('should call fetch with the correct url', () => {
+
+      const artists = searchArtists('Incubus')
+      expect(fetchedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Incubus&type=artist')
+
+      const artists2 = searchArtists('Muse')
+      expect(fetchedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Muse&type=artist')
+
+    })
+
+  })
+
+  describe('searchAlbums', () => {
+
+    it('should call fetch function', () => {
+
+      const albums = searchAlbums('Audioslave')
+      expect(fetchedStub).to.have.been.calledOnce
+
+    })
+
+    it('should call fetch with the correct url', () => {
+
+      const albums = searchAlbums('Audioslave')
+      expect(fetchedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Audioslave&type=album')
+
+      const albums2 = searchAlbums('Paramore')
+      expect(fetchedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Paramore&type=album')
+
+    })
+
+  })
+
+  describe('searchTracks', () => {
+
+    it('should call fetch function', () => {
+
+      const tracks = searchTracks('Paramore')
+      expect(fetchedStub).to.have.been.calledOnce
+
+    })
+
+    it('should call fetch with the correct url', () => {
+
+      const tracks = searchTracks('Muse')
+      expect(fetchedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Muse&type=track')
+
+      const tracks2 = searchTracks('Supercombo')
+      expect(fetchedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Supercombo&type=track')
+
+    })
+
+  })
+
+  describe('searchPlaylists', () => {
+
+    it('should call fetch function', () => {
+
+      const playlists = searchPlaylists('Foo Fighters')
+      expect(fetchedStub).to.have.been.calledOnce
+
+    })
+
+    it('should call fetch with the correct url', () => {
+
+      const playlists = searchPlaylists('Scalene')
+      expect(fetchedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Scalene&type=playlist')
+
+      const playlists2 = searchPlaylists('Jake Bugg')
+      expect(fetchedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Jake Bugg&type=playlist')
+
     })
 
   })
