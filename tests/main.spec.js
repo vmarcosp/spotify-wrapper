@@ -1,9 +1,10 @@
 import chai, { expect } from 'chai'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
+import nodeFetch from 'node-fetch'
 import sinonStubPromise from 'sinon-stub-promise'
 
-global.fetch = require('node-fetch')
+global.fetch = nodeFetch
 
 chai.use(sinonChai)
 sinonStubPromise(sinon)
@@ -18,11 +19,6 @@ import {
 describe('Spotify Wrapper', () => {
 
   describe('smoke tests', () => {
-    // search - Generic method to find any types
-    // searchArtists
-    // searchAlbums
-    // searchTracks
-    // searchPlaylists
 
     it('should exists the search method', () => {
       expect(search).to.exist
@@ -44,31 +40,53 @@ describe('Spotify Wrapper', () => {
       expect(searchPlaylists).to.exist
     })
 
-
-
   })
 
   describe('Generic Search', () => {
+    let fetchedStub;
+    let promise;
+
+    beforeEach(() => {
+      fetchedStub = sinon.stub(global, 'fetch')
+      promise = fetchedStub.returnsPromise()
+    })
+
+    afterEach(() => fetchedStub.restore())
 
     it('should call fetch function', () => {
-      const fetchedStub = sinon.stub(global, 'fetch')
+
       const artists = search()
 
       expect(fetchedStub).to.have.been.calledOnce
-      fetchedStub.restore()
     })
 
     it('should receive the correct url to fetch', () => {
-      const fetchedStub = sinon.stub(global, 'fetch')
+
+      context('when passing one type', () => {
+        const artists = search('Incubus', 'artist')
+
+        expect(fetchedStub).to.have
+          .calledWith('https://api.spotify.com/v1/search?q=Incubus&type=artist')
+
+        const albums = search('Incubus', 'album')
+        expect(fetchedStub).to.have.been
+          .calledWith('https://api.spotify.com/v1/search?q=Incubus&type=album')
+
+      })
+
+      context('when passing more than one type', () => {
+        const artistsAndAlbums = search('Incubus', ['artist', 'album'])
+        expect(fetchedStub).to.have.been
+          .calledWith('https://api.spotify.com/v1/search?q=Incubus&type=artist,album')
+      })
+
+    })
+
+    it('should return the JSON data from the Promise', () => {
+      promise.resolves({ body: 'json' })
       const artists = search('Incubus', 'artist')
 
-      expect(fetchedStub).to.have
-        .calledWith('https://api.spotify.com/v1/search?q=Incubus&type=artist')
-
-      const albums = search('Incubus', 'album')
-      expect(fetchedStub).to.have.been
-        .calledWith('https://api.spotify.com/v1/search?q=Incubus&type=album')
-
+      expect(artists.resolveValue).to.be.eql({ body: 'json' })
     })
 
   })
