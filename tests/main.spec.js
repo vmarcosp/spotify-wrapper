@@ -1,6 +1,11 @@
-import { expect } from 'chai';
+import { expect } from 'chai'
 
-import { search } from '../src/main';
+import {
+  search, searchArtists,
+  searchAlbums,
+  searchTracks,
+  searchPlaylists
+} from '../src/main'
 
 describe('Spotify Wrapper', () => {
 
@@ -12,9 +17,27 @@ describe('Spotify Wrapper', () => {
     // searchPlaylists
 
     it('should exists the search method', () => {
-      expect(search).to.exist;
-    });
+      expect(search).to.exist
+    })
 
-  });
+    it('should exists searchArtists method', () => {
+      expect(searchArtists).to.exist
+    })
 
-});
+    it('should exists searchAlbums method', () => {
+      expect(searchAlbums).to.exist
+    })
+
+    it('should exists searchTracks method', () => {
+      expect(searchTracks).to.exist
+    })
+
+    it('should exists searchPlaylists method', () => {
+      expect(searchPlaylists).to.exist
+    })
+
+
+
+  })
+
+})

@@ -1,5 +1,5 @@
-const search = () => { }
-
-export default {
-  search
-}
+export const search = () => { }
+export const searchArtists = () => { }
+export const searchAlbums = () => { }
+export const searchTracks = () => { }
+export const searchPlaylists = () => { }
