@@ -1,4 +1,12 @@
-import { expect } from 'chai'
+import chai, { expect } from 'chai'
+import sinon from 'sinon'
+import sinonChai from 'sinon-chai'
+import sinonStubPromise from 'sinon-stub-promise'
+
+global.fetch = require('node-fetch')
+
+chai.use(sinonChai)
+sinonStubPromise(sinon)
 
 import {
   search, searchArtists,
@@ -37,6 +45,17 @@ describe('Spotify Wrapper', () => {
     })
 
 
+
+  })
+
+  describe('Generic Search', () => {
+
+    it('should call fetch function', () => {
+      const fetchedStub = sinon.stub(global, 'fetch')
+      const artists = search()
+
+      expect(fetchedStub).to.have.been.calledOnce
+    })
 
   })
 
