@@ -2,7 +2,7 @@
 /coverage/**
 /docs/**
 /jsdoc/**
-/tests/**
+/tests/**/*
 /templates/**
 /tests/bench/**
 /tests/fixtures/**

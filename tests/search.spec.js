@@ -14,9 +14,9 @@ import {
   searchAlbums,
   searchTracks,
   searchPlaylists
-} from '../src/main'
+} from '../src/search'
 
-describe('Spotify Wrapper', () => {
+describe('Search', () => {
 
   let fetchedStub;
   let promise;
