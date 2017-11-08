@@ -4,8 +4,11 @@
   "description": "A simple wrapper to work with the [Spotify Web API](https://developer.spotify.com/web-api/)",
   "main": "src/index.js",
   "scripts": {
-    "clear": "rimraf lib",
-    "build": "npm run clear && ./node_modules/.bin/babel --out-dir lib src",
+    "clear": "./node_modules/.bin/rimraf dist",
+    "build:transpile": "./node_modules/.bin/babel --out-dir library src",
+    "build:umd": "./node_modules/.bin/webpack --output-filename wrapperify.umd.js",
+    "build:umd:min": "./node_modules/.bin/webpack --output-filename wrapperify.umd.min.js -p",
+    "build": "npm run build:transpile && npm run build:umd && npm run build:umd:min",
     "build:watch": "npm run build -- --watch",
     "lint": "./node_modules/.bin/eslint src/*.js",
     "test": "./node_modules/.bin/mocha tests/**/*.spec.js --require babel-register",
@@ -38,6 +41,7 @@
   "homepage": "https://github.com/willianjusten/spotify-wrapper#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
     "babel-register": "^6.26.0",
     "chai": "^3.5.0",
@@ -54,6 +58,7 @@
     "rimraf": "^2.6.2",
     "sinon": "^4.0.2",
     "sinon-chai": "^2.14.0",
-    "sinon-stub-promise": "^4.0.0"
+    "sinon-stub-promise": "^4.0.0",
+    "webpack": "^3.8.1"
   }
 }

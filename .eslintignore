@@ -9,4 +9,5 @@
 /tests/performance/**
 /tmp/**
 test.js
+webpack.config.babel.js
 !.eslintrc.js
